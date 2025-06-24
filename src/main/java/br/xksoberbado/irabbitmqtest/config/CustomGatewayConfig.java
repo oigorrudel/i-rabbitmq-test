@@ -25,7 +25,7 @@ public class CustomGatewayConfig {
     @Bean
     public RouterFunction<ServerResponse> gatewayRoutes() {
         return route("rabbitmq-api")
-            .GET("/rabbitmq-api/**", http())
+            .route(request -> true, http())
             .before(rewritePath("/rabbitmq-api/(?<segment>.*)", "/api/${segment}"))
             .before(uri("http://localhost:15672"))
             .before(addRequestHeader(HttpHeaders.AUTHORIZATION, "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes())))
